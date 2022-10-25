@@ -1,5 +1,5 @@
 import os
-from flask_app.models.user import User
+from flask_app.models.usuario import Usuario
 from flask import flash, redirect, render_template, request, session
 from flask_app import app
 from flask_bcrypt import Bcrypt
@@ -17,7 +17,11 @@ def index():
 @app.route("/usuarios")
 def usuarios():
     return render_template("usuarios.html")
-    
+
+@app.route("/atenciones")
+def atenciones():
+    return render_template("atenciones.html")
+
 @app.route("/login")
 def login():
     return render_template("login.html")

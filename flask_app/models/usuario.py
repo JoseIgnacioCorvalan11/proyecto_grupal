@@ -5,7 +5,7 @@ from flask_app.config.mysqlconnection import connectToMySQL
 from flask_app.utils.regex import EMAIL_REGEX
 
 
-class User:
+class Usuario:
     def __init__( self , data ):
         self.identificacion = data['identificacion']
         self.nombre = data['nombre']
@@ -21,17 +21,17 @@ class User:
 
     @classmethod
     def save(cls, data ):
-        query = "INSERT INTO users ( nombre , apellidoP, apellidoM, telefono, mail, contraseña, tipo_usuario, created_at, updated_at ) VALUES ( %(nombre)s , %(apellidoP)s , %(apellidoM)s , %(telefono)s , %(mail)s , %(contraseña)s, %(tipo_usuario)s , NOW() , NOW() );"
+        query = "INSERT INTO usuarios ( identificacion, nombre , apellidoP, apellidoM, telefono, mail, contraseña, tipo_usuario, created_at, updated_at ) VALUES ( %(nombre)s , %(nombre)s , %(apellidoP)s , %(apellidoM)s , %(telefono)s , %(mail)s , %(contraseña)s, %(tipo_usuario)s , NOW() , NOW() );"
         return connectToMySQL(os.environ.get("BBDD_NAME")).query_db( query, data )
     
     @classmethod
     def update(cls, data ):
-        query = "UPDATE users SET first_name=%(nombre)s , last_name=%(apellido)s , email= %(mail)s, updated_at=NOW() where id =%(id)s"
+        query = "UPDATE usuarios SET nombre=%(nombre)s , apellidoP=%(apellidoP)s , apellidoM=%(apellidoM)s ,  mail= %(mail)s, updated_at=NOW() where identificacion =%(identificacion)s"
         return connectToMySQL(os.environ.get("BBDD_NAME")).query_db( query, data )
 
     @classmethod
     def delete(cls, id ):
-        query = "DELETE from users WHERE id = %(id)s;"
+        query = "DELETE from usuarios WHERE identificacion = %(identificacion)s;"
         data={
             'id':id
         }
@@ -40,7 +40,7 @@ class User:
 
     @classmethod
     def get_all(cls):
-        query = "SELECT * FROM users;"
+        query = "SELECT * FROM usuarios;"
         results = connectToMySQL(os.environ.get("BBDD_NAME")).query_db(query)
         users = []
         for user in results:
@@ -50,7 +50,7 @@ class User:
     
     @classmethod
     def get_by_id(cls, id):
-        query = "SELECT * from users where id = %(id)s;"
+        query = "SELECT * from usuarios where identificacion = %(identificacion)s;"
         data={
             'id':id
         }
@@ -63,24 +63,15 @@ class User:
 
 
     @classmethod
-    def email_bbdd(cls, mail ):
-        query = f"select * from users WHERE email = '{mail}';"
-        data={
-            'mail':mail}
-        results = connectToMySQL(os.environ.get("BBDD_NAME")).query_db( query, data )
-        if not results:
-            return False
-        data_com = results [0]
-        return data_com
-
-
-    @classmethod
     def validate_user(cls, data):
         is_valid = True
         if len((data['nombre'])) < 2:
             flash("Debes ingresar minino 3 letras en el nombre.", "error")
             is_valid = False
-        if len(data['apellido']) < 2:
+        if len(data['apellidoP']) < 2:
+            flash("Debes ingresar minino 3 letras en el apellido.", "error")
+            is_valid = False
+        if len(data['apellidoM']) < 2:
             flash("Debes ingresar minino 3 letras en el apellido.", "error")
             is_valid = False
         if len(data['contraseña']) < 8:

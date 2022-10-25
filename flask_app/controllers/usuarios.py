@@ -1,5 +1,5 @@
 import os
-from flask_app.models.user import User
+from flask_app.models.usuario import Usuario
 from flask import flash, redirect, request, session
 from flask_app import app
 from flask_bcrypt import Bcrypt
