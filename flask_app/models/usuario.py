@@ -36,6 +36,14 @@ class Usuario:
             'id':id
         }
         return connectToMySQL(os.environ.get("BBDD_NAME")).query_db( query, data )
+    
+    @classmethod
+    def get_by_tipo(cls, tipo_usuario ):
+        query = "SELECT * from usuarios WHERE tipo_usuario = %(tipo_usuario)s;"
+        data={
+            'tipo_usuario':tipo_usuario
+        }
+        return connectToMySQL(os.environ.get("BBDD_NAME")).query_db( query, data )
         
 
     @classmethod

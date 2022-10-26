@@ -32,7 +32,8 @@ def login():
 def mascotas():
     if 'mail' in session:
         if session['tipo'] <2:
-            return render_template("mascotas.html")
+            dueños=Usuario.get_by_tipo(3)
+            return render_template("mascotas.html", dueños=dueños)
         else:
             flash("No tienes los accesos", "error")
             return redirect("/")

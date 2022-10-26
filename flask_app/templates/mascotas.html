@@ -18,12 +18,38 @@
                 <input  class="form-control" type="text" name="nombre" id="nombre" value="">
             </div>
             <div class="mb-3">
-                <label for="apellido"  class="form-label">Dueño:</label>
-                <input  class="form-control" type="text" name="apellido" id="apellido" value="">
-            </div>          
+                <label for="tipo_animal"  class="form-label">Tipo animal:</label>
+                <select name="tipo_animal" id="" class="form-control">
+                    <option value="canino">Canino</option>
+                    <option value="felino">Felino</option>
+                    <option value="pez">Pez</option>
+                    <option value="reptil">Reptil</option>
+                    <option value="ave">Ave</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="sexo"  class="form-label">Sexo:</label>
+                <select name="sexo" id="" class="form-control">
+                    <option value="hembra">Hembra</option>
+                    <option value="macho">Macho</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="raza" class="form-label">Raza:</label>
+                <input  class="form-control" type="text" name="raza" id="raza" value="">
+            </div> 
+            <div class="mb-3">
+                <label for="dueño"  class="form-label">Dueño:</label>
+                <select name="dueño" id="" class="form-control">
+                    {% for dueño in dueños %}
+                    <option value="{{dueño.identificacion}}">{{dueño.nombre}} {{dueño.apellido_p}}</option>
+                    {% endfor %}
+                    
+                </select>
+            </div>           
             <div class="mb-3">
                 <input class="btn btn-success" type="submit" value="Agregar">
-                </div>
+            </div>
         </form>
     </div>
 </div>
@@ -36,6 +62,8 @@
         <tr>
             <th>Mascota</th>
             <th>Dueño</th>
+            <th>Tipo</th>
+            <th>Raza</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -43,6 +71,8 @@
         <tr>
             <td>Tiger</td>
             <td>Pedro Lira</td>
+            <td>Canino</td>
+            <td>Poodle</td>
             <td><a href="#"  class="btn btn-secondary">Modificar</a>
             <a href="#" class="btn btn-warning">Eliminar</a></td>
             
@@ -50,17 +80,19 @@
         <tr>
             <td>Tiger</td>
             <td>Pedro Lira</td>
-
+            <td>Canino</td>
+            <td>Poodle</td>
             <td><a href="#"  class="btn btn-secondary">Modificar</a>
-                <a href="#" class="btn btn-warning">Eliminar</a></td>
-           
+            <a href="#" class="btn btn-warning">Eliminar</a></td>
+            
         </tr>
         <tr>
             <td>Tiger</td>
             <td>Pedro Lira</td>
-
+            <td>Canino</td>
+            <td>Poodle</td>
             <td><a href="#"  class="btn btn-secondary">Modificar</a>
-                <a href="#" class="btn btn-warning">Eliminar</a></td>
+            <a href="#" class="btn btn-warning">Eliminar</a></td>
             
         </tr>
     </tbody>
