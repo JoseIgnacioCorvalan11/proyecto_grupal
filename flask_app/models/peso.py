@@ -14,7 +14,7 @@ class Peso:
     @staticmethod
     def validar_peso(formulario):
         valido = True
-        if len(formulario['peso']) > 0:
+        if len(formulario['peso']) <= 0:
             flash("El peso es mayor a 0")
             valido = False
         return valido
