@@ -5,7 +5,7 @@ from flask_app.config.mysqlconnection import connectToMySQL
 class Peso:
     def __init__( self , data ):
         self.id = data['id']
-        self.descripcion = data['peso']
+        self.peso = data['peso']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
     def __iter__(self):
