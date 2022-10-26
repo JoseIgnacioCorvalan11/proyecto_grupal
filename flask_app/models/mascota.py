@@ -27,17 +27,17 @@ class Mascota:
     @classmethod
     def save(cls, data ):
         query = "INSERT INTO mascotas ( id , nombre, tipo_mascota, sexo, raza, created_at, updated_at, dueño) VALUES( %(id)s, %(nombre)s, %(tipo_mascota)s, %(sexo)s, %(raza)s, NOW(), NOW(), %(dueño)s );"
-        return connectToMySQL(os.environ.get("mybd")).query_db( query, data )
+        return connectToMySQL(os.environ.get("bd_veterinaria")).query_db( query, data )
 
     @classmethod
     def update(cls, data):
         query = "UPDATE mascotas SET id = %(id)s, nombre = %(nombre)s, tipo_mascota = %(tipo_mascota)s, sexo = %(sexo)s, raza = %(raza)s, created_at = NOW(), updated_at = NOW(), dueño = %(dueño)s;"
-        return connectToMySQL(os.environ.get("mybd")).query_db( query, data )
+        return connectToMySQL(os.environ.get("bd_veterinaria")).query_db( query, data )
 
     @classmethod
     def get_all(cls, data):
         query = "SELECT * FROM mascotas;"
-        results = connectToMySQL(os.environ.get("mybd")).query_db(query, data)
+        results = connectToMySQL(os.environ.get("bd_veterinaria")).query_db(query, data)
         mascotas = []
         for mascota in results:
             mascotas.append(cls(mascota))
