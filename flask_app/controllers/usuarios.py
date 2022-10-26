@@ -8,25 +8,29 @@ bcrypt=Bcrypt(app)
 
 @app.route("/agregar_usuario", methods=["POST"])
 def agregar_usuario():
+    
+    if not Usuario.validate_user(request.form):
+        return redirect('/administracion')
 
-    if not User.validate_user(request.form):
-        return redirect('/')
-
-    if User.email_bbdd(request.form['mail']):
+    if Usuario.get_by_mail(request.form['mail']):
         flash(f"El correo {request.form['mail']} ya esta registrado", "error")
-        return redirect('/')
+        return redirect('/administracion')
     
     hash_pass = bcrypt.generate_password_hash(request.form['contraseña'])
     
     data = {
+        "identificacion": request.form["identificacion"],
         "nombre": request.form["nombre"],
-        "apellido" : request.form["apellido"],
+        "apellidoP" : request.form["apellidoP"],
+        "apellidoM" : request.form["apellidoM"],
+        "tipo" : request.form["tipo"],
+        "telefono" : request.form["telefono"],
         "mail" : request.form["mail"],
         "contraseña" : hash_pass
     }
-    User.save(data)
+    Usuario.save(data)
     flash(f"exito al agregar el usuario {data['nombre']}", "success")
-    return redirect("/")
+    return redirect("/administracion")
 
 @app.route("/modificar_usuario/<id>", methods=["POST"])
 def modificar_usuario(id):
@@ -51,15 +55,15 @@ def modificar_usuario(id):
     }
     User.update(data)
     flash(f"exito al modificar el usuario {data['nombre']}", "success")
-    return redirect("/user/account")
+    return redirect("/administracion")
 
 @app.route("/eliminar/<id>")
 def eliminar(id):
     
     if 'mail' in session:
-        User.delete(id)
+        Usuario.delete(id)
         flash("Usuario eliminado exitosamente","success")
-        return redirect("/")
+        return redirect("/administracion")
     else:
         return redirect("/")
 

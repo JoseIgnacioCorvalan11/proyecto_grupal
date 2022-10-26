@@ -5,19 +5,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema bd_veterinaria
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema bd_veterinaria
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `bd_veterinaria` DEFAULT CHARACTER SET utf8 ;
+USE `bd_veterinaria` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Usuarios`
+-- Table `bd_veterinaria`.`Usuarios`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Usuarios` (
+CREATE TABLE IF NOT EXISTS `bd_veterinaria`.`Usuarios` (
   `identificacion` INT NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `apellido_p` VARCHAR(45) NOT NULL,
@@ -33,9 +33,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Mascotas`
+-- Table `bd_veterinaria`.`Mascotas`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Mascotas` (
+CREATE TABLE IF NOT EXISTS `bd_veterinaria`.`Mascotas` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
   `tipo_mascota` VARCHAR(45) NOT NULL,
@@ -48,16 +48,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Mascotas` (
   INDEX `fk_Mascotas_Dueños_idx` (`dueño` ASC) VISIBLE,
   CONSTRAINT `fk_Mascotas_Dueños`
     FOREIGN KEY (`dueño`)
-    REFERENCES `mydb`.`Usuarios` (`identificacion`)
+    REFERENCES `bd_veterinaria`.`Usuarios` (`identificacion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Peso`
+-- Table `bd_veterinaria`.`Peso`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Peso` (
+CREATE TABLE IF NOT EXISTS `bd_veterinaria`.`Peso` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `peso` VARCHAR(45) NULL,
   `fecha` DATETIME NULL,
@@ -68,9 +68,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Atencion`
+-- Table `bd_veterinaria`.`Atencion`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Atencion` (
+CREATE TABLE IF NOT EXISTS `bd_veterinaria`.`Atencion` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `tratamiento` VARCHAR(200) NULL,
   `fecha` DATETIME NULL,
@@ -85,26 +85,26 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Atencion` (
   INDEX `fk_Atencion_Usuarios1_idx` (`veterinario` ASC) VISIBLE,
   CONSTRAINT `fk_Atencion_Mascotas1`
     FOREIGN KEY (`mascota`)
-    REFERENCES `mydb`.`Mascotas` (`id`)
+    REFERENCES `bd_veterinaria`.`Mascotas` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Atencion_Peso1`
     FOREIGN KEY (`peso`)
-    REFERENCES `mydb`.`Peso` (`id`)
+    REFERENCES `bd_veterinaria`.`Peso` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Atencion_Usuarios1`
     FOREIGN KEY (`veterinario`)
-    REFERENCES `mydb`.`Usuarios` (`identificacion`)
+    REFERENCES `bd_veterinaria`.`Usuarios` (`identificacion`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Medicamentos`
+-- Table `bd_veterinaria`.`Medicamentos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Medicamentos` (
+CREATE TABLE IF NOT EXISTS `bd_veterinaria`.`Medicamentos` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `descripcion` VARCHAR(45) NULL,
   `created_at` DATETIME NULL,
@@ -114,21 +114,21 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`medicamentosAtencion`
+-- Table `bd_veterinaria`.`medicamentosAtencion`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`medicamentosAtencion` (
+CREATE TABLE IF NOT EXISTS `bd_veterinaria`.`medicamentosAtencion` (
   `medicamento` INT NOT NULL,
   `atencion` INT NOT NULL,
   INDEX `fk_medicamentosAtencion_Medicamentos1_idx` (`medicamento` ASC) VISIBLE,
   INDEX `fk_medicamentosAtencion_Atencion1_idx` (`atencion` ASC) VISIBLE,
   CONSTRAINT `fk_medicamentosAtencion_Medicamentos1`
     FOREIGN KEY (`medicamento`)
-    REFERENCES `mydb`.`Medicamentos` (`id`)
+    REFERENCES `bd_veterinaria`.`Medicamentos` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_medicamentosAtencion_Atencion1`
     FOREIGN KEY (`atencion`)
-    REFERENCES `mydb`.`Atencion` (`id`)
+    REFERENCES `bd_veterinaria`.`Atencion` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

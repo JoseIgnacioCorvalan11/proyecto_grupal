@@ -13,13 +13,16 @@ def index():
     else:
         return render_template("login.html")
 
-@app.route("/usuarios")
-def usuarios():
-    return render_template("usuarios.html")
-
 @app.route("/atenciones")
 def atenciones():
-    return render_template("atenciones.html")
+    if 'mail' in session:
+        if session['tipo'] <3:
+            return render_template("atenciones.html")
+        else:
+            flash("No tienes los accesos", "error")
+            return redirect("/")
+    else:
+        return redirect("/")
 
 @app.route("/login")
 def login():
@@ -27,34 +30,53 @@ def login():
 
 @app.route("/mascotas")
 def mascotas():
-    return render_template("mascotas.html")
+    if 'mail' in session:
+        if session['tipo'] <2:
+            return render_template("mascotas.html")
+        else:
+            flash("No tienes los accesos", "error")
+            return redirect("/")
+    else:
+        return redirect("/")
 
 @app.route("/inicio")
 def inicio():
-    return render_template("index.html")
+    if 'mail' in session:
+        return render_template("index.html")
+    else:
+        return redirect("/")
 
 @app.route("/administracion")
 def administracion():
-    return render_template("administracion.html")
+    if 'mail' in session:
+        if session['tipo'] <2:
+            usuarios=Usuario.get_all()
+            return render_template("administracion.html", usuarios=usuarios)
+        else:
+            flash("No tienes los accesos", "error")
+            return redirect("/")
+    else:
+        return redirect("/")
     
     
 @app.route("/procesar_login", methods=["POST"])
 def procesar_login():
-    if not User.validate_login(request.form):
+    if not Usuario.validate_login(request.form):
         return redirect('/')
 
-    usuario=User.email_bbdd(request.form['mail'])
+    usuario=Usuario.get_by_mail(request.form['mail'])
     if not usuario:
         flash("Usuario o clave incorrecta", "error")    
         return redirect("/")
-    if not bcrypt.check_password_hash(usuario.get('password'), request.form['contraseña']):
+    if not bcrypt.check_password_hash(usuario.get('contraseña'), request.form['contraseña']):
         flash("Usuario o clave incorrecta", "error")
         return redirect("/")
 
-    session['mail']=usuario.get('email')
-    session['id']=usuario.get('id')
-    session['usuario']=usuario.get('first_name')
-    return redirect("/dashboard")
+    session['mail']=usuario.get('mail')
+    session['id']=usuario.get('identificacion')
+    session['nombre']=usuario.get('nombre')
+    session['tipo']=usuario.get('tipo_usuario')
+    return redirect("/inicio")
     
 @app.route("/cerrar_session")
 def cerrar_session():
