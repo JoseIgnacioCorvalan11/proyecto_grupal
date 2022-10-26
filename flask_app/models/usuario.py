@@ -7,7 +7,7 @@ from flask_app.utils.regex import EMAIL_REGEX
 
 class Usuario:
     def __init__( self , data ):
-        self.identificacion = data['identificacion']
+        self.id = data['identificacion']
         self.nombre = data['nombre']
         self.apellidoP = data['apellido_p']
         self.apellidoM = data['apellido_m']
@@ -21,12 +21,12 @@ class Usuario:
 
     @classmethod
     def save(cls, data ):
-        query = "INSERT INTO usuarios ( identificacion, nombre , apellido_p, apellido_m, telefono, mail, contraseña, tipo_usuario, created_at, updated_at ) VALUES ( %(identificacion)s, %(nombre)s , %(apellidoP)s , %(apellidoM)s , %(telefono)s , %(mail)s , %(contraseña)s, %(tipo)s , NOW() , NOW() );"
+        query = "INSERT INTO usuarios ( identificacion, nombre , apellido_p, apellido_m, telefono, mail, contraseña, tipo_usuario, created_at, updated_at ) VALUES ( %(id)s, %(nombre)s , %(apellidoP)s , %(apellidoM)s , %(telefono)s , %(mail)s , %(contraseña)s, %(tipo)s , NOW() , NOW() );"
         return connectToMySQL(os.environ.get("BBDD_NAME")).query_db( query, data )
     
     @classmethod
     def update(cls, data ):
-        query = "UPDATE usuarios SET nombre=%(nombre)s , apellidoP=%(apellidoP)s , apellidoM=%(apellidoM)s ,  mail= %(mail)s,contraseña=%(contraseña)s updated_at=NOW() where identificacion =%(identificacion)s"
+        query = "UPDATE usuarios SET nombre=%(nombre)s , apellido_p=%(apellidoP)s , apellido_m=%(apellidoM)s ,  mail= %(mail)s,contraseña=%(contraseña)s, telefono=%(telefono)s, updated_at=NOW() where identificacion =%(id)s"
         return connectToMySQL(os.environ.get("BBDD_NAME")).query_db( query, data )
 
     @classmethod
@@ -58,6 +58,19 @@ class Usuario:
         print(results)
         if not results:
             return False
+        mail_data = results [0]
+        return mail_data
+    
+    @classmethod
+    def get_by_id(cls, id):
+        query = "SELECT * from usuarios where identificacion = %(id)s;"
+        data={
+            'id':id
+        }
+        results = connectToMySQL(os.environ.get("BBDD_NAME")).query_db(query, data)
+        print(results)
+        if not results:
+            return False
         id_data = results [0]
         return id_data
 
@@ -65,6 +78,9 @@ class Usuario:
     @classmethod
     def validate_user(cls, data):
         is_valid = True
+        if len((data['identificacion'])) < 8:
+            flash("Debes ingresar minino 8 caracteres en la identificacion.", "error")
+            is_valid = False
         if len((data['nombre'])) < 2:
             flash("Debes ingresar minino 3 letras en el nombre.", "error")
             is_valid = False
@@ -108,11 +124,22 @@ class Usuario:
         if len((data['nombre'])) < 2:
             flash("Debes ingresar minino 3 letras en el nombre.", "error")
             is_valid = False
-        if len(data['apellido']) < 2:
+        if len(data['apellidoP']) < 2:
             flash("Debes ingresar minino 3 letras en el apellido.", "error")
             is_valid = False
-        if not EMAIL_REGEX.match(data['mail']):
-            flash("Formato de correo incorrecto", "error")
+        if len(data['apellidoM']) < 2:
+            flash("Debes ingresar minino 3 letras en el apellido.", "error")
+            is_valid = False
+        if len(data['telefono']) <9 and len(data['telefono'])>9:
+            flash("Debes ingresar 9 numeros en el telefono.", "error")
+            is_valid = False
+        if len(data['contraseña'])>1 and len(data['contraseña']) < 8:
+            flash("Debes ingresar al menos 8 caracteres en la contraseña.", "error")
+            is_valid = False
+        if data['contraseña'] == data['contraseña_confirm']:
+            print(data['contraseña'])
+        else: 
+            flash("Ambas contraseñas deben ser iguales.", "error")
             is_valid = False
        
         return is_valid

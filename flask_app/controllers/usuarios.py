@@ -19,7 +19,7 @@ def agregar_usuario():
     hash_pass = bcrypt.generate_password_hash(request.form['contraseña'])
     
     data = {
-        "identificacion": request.form["identificacion"],
+        "id": request.form["identificacion"],
         "nombre": request.form["nombre"],
         "apellidoP" : request.form["apellidoP"],
         "apellidoM" : request.form["apellidoM"],
@@ -32,28 +32,41 @@ def agregar_usuario():
     flash(f"exito al agregar el usuario {data['nombre']}", "success")
     return redirect("/administracion")
 
+
+
+
+
 @app.route("/modificar_usuario/<id>", methods=["POST"])
 def modificar_usuario(id):
+    info_user=Usuario.get_by_id(id)
 
-    if not User.validate_update(request.form):
-        return redirect('/user/account')
+    if not Usuario.validate_update(request.form):
+        return redirect('/administracion')
     
-    email_data=User.email_bbdd(request.form['mail'])
-    
+    email_data=Usuario.get_by_mail(request.form['mail'])
+    print(email_data)
     if email_data==False:
         print("no hay usuarios con ese correo")
-    elif session['mail']==email_data['email']:
+    elif request.form['mail']==email_data['mail']:
         print("No quiere modificar su correo")
     else:
         flash(f"El correo {request.form['mail']} ya esta registrado", "error")
-        return redirect('/user/account')
+        return redirect('/administracion')
+    if len(request.form['contraseña'])>1:
+        hash_pass = bcrypt.generate_password_hash(request.form['contraseña'])
+    else:
+        print(info_user['contraseña'])
+        hash_pass=info_user['contraseña']
     data = {
-        "id":id,
+        "id": request.form["id"],
         "nombre": request.form["nombre"],
-        "apellido" : request.form["apellido"],
-        "mail" : request.form["mail"]
+        "apellidoP" : request.form["apellidoP"],
+        "apellidoM" : request.form["apellidoM"],
+        "telefono" : request.form["telefono"],
+        "mail" : request.form["mail"],
+        "contraseña" : hash_pass
     }
-    User.update(data)
+    Usuario.update(data)
     flash(f"exito al modificar el usuario {data['nombre']}", "success")
     return redirect("/administracion")
 

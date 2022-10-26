@@ -83,11 +83,9 @@ def cerrar_session():
     session.clear()
     return redirect ("/")
 
-@app.route("/user/account")
-def usuario_modificar():
+@app.route("/usuarios/<id>/modificar")
+def usuario_modificar(id):
     if 'mail' in session:
-        id=session['id']
-        usuario=User.get_by_id(id)
-        return render_template("modificar.html", usuario=usuario)
+        return render_template("modificar_usuario.html", usuario=Usuario.get_by_id(id))
     else:
-        return redirect("/")
+        return redirect ("/")
