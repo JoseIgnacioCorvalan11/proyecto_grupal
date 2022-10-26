@@ -13,7 +13,6 @@ def index():
     else:
         return render_template("login.html")
 
-
 @app.route("/usuarios")
 def usuarios():
     return render_template("usuarios.html")
@@ -26,9 +25,17 @@ def atenciones():
 def login():
     return render_template("login.html")
 
+@app.route("/mascotas")
+def mascotas():
+    return render_template("mascotas.html")
+
 @app.route("/inicio")
 def inicio():
     return render_template("index.html")
+
+@app.route("/administracion")
+def administracion():
+    return render_template("administracion.html")
     
     
 @app.route("/procesar_login", methods=["POST"])
