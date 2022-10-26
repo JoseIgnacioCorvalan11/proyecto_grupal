@@ -18,7 +18,7 @@ class Mascota:
     @staticmethod
     def validar_nombre(formulario):
         valido = True
-        if len(formulario['nombre']) > 2:
+        if len(formulario['nombre']) < 2:
             flash("El nombre de la mascota debe tener al menos 2 caracteres")
             valido = False
         return valido
