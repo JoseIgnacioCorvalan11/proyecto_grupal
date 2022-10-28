@@ -10,15 +10,15 @@ class Atencion:
         self.fecha = data['fecha']
         self.created_at = data['created_at']
         self.updated_at = data['updated_at']
-        self.peso = data['peso']
         self.veterinario = data['veterinario']
         self.mascota = data['mascota']
+        self.medicamento = data['medicamento']
 
 
 
     @classmethod
     def save(cls, data):
-        query = "INSERT INTO Atencion( id, tratamiento, fecha, created_at, updated_at) VALUES ( %(id)s, %(tratamiento)s, %(fecha)s, NOW(), NOW() );"
+        query = "INSERT INTO Atencion( tratamiento, fecha, created_at, updated_at, veterinario, mascota, medicamento) VALUES ( %(tratamiento)s, %(fecha)s, NOW(), NOW(), %(veterinario)s, %(mascota)s, %(medicamento)s  );"
         return connectToMySQL(os.environ.get("BBDD_NAME")).query_db(query, data)
 
     @classmethod
@@ -31,13 +31,13 @@ class Atencion:
         query = "DELETE from Atencion WHERE id = %(id)s;"
         return connectToMySQL(os.environ.get("BBDD_NAME")).query_db(query, data)
 
+    
+
     @classmethod
-    def get_all(cls, data):
-        print(data, "esto esta en la data de atencion")
-        query = "SELECT * FROM Atencion;"
-        results =connectToMySQL(os.environ.get("BBDD_NAME")).query_db(query, data)
-        print(results, "esto esta en results")
+    def get_all(cls):
+        query = "select a.id, m.nombre as nombre_mascota,  concat(u.nombre,' ', u.apellido_p) as veterinario, u.identificacion as id_vet, a.tratamiento, d.descripcion as medicamento, concat(o.nombre, ' ', o.apellido_p) as dueño from atencion a join mascotas m on a.mascota=m.id join usuarios u on a.veterinario=u.identificacion join medicamentos d on a.medicamento=d.id join usuarios o on o.identificacion = m.dueño;"
+        results = connectToMySQL(os.environ.get("BBDD_NAME")).query_db(query)
         atenciones = []
-        for atencion in results:  # type: ignore
-            atenciones.append(cls(atencion))
+        for atencion in results:
+            atenciones.append((atencion))
         return atenciones

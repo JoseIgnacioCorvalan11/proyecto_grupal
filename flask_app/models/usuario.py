@@ -44,7 +44,6 @@ class Usuario:
             'tipo_usuario':tipo_usuario
         }
         return connectToMySQL(os.environ.get("BBDD_NAME")).query_db( query, data )
-        
 
     @classmethod
     def get_all(cls):

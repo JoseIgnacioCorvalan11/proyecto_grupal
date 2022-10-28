@@ -6,41 +6,38 @@
 <div class="container-fluid  mt-5">
 <h3 class="text-white">Pagina Principal</h3>
 
-
-<table class="table table-striped table-bordered dt-responsive nowrap bg-white" style="width:100%">
+<div class="bg-white p-3 border rounded">
+<table class="table table-striped table-bordered dt-responsive nowrap bg-white" style="width:100%" id="tabla_principal">
     <thead>
         <tr>
             <th>Mascota</th>
             <th>Dueño</th>
             <th>Veterinario</th>
             <th>Diagnostico</th>
+            <th>Medicamento</th>
+            <th>Reporte</th>
+            
         </tr>
     </thead>
     <tbody>
+       {% for atencion in atenciones %}
         <tr>
-            <td>Tiger</td>
-            <td>Pedro Lira</td>
-            <td>Juan Puebla</td>
-            <td>Pioderma del obejero aleman</td>
+            <td>{{atencion.nombre_mascota}}</td>
+            <td>{{atencion.dueño}}</td>
+            <td>{{atencion.veterinario}}</td>
+            <td>
+                <textarea class="form-control" readonly>{{atencion.tratamiento}}</textarea>
+                
+            </td>
+            <td>{{atencion.medicamento}}</td>
+            
             
         </tr>
-        <tr>
-            <td>Tiger</td>
-            <td>Pedro Lira</td>
-            <td>Juan Puebla</td>
-            <td>Pioderma del obejero aleman</td>
-           
-        </tr>
-        <tr>
-            <td>Tiger</td>
-            <td>Pedro Lira</td>
-            <td>Juan Puebla</td>
-            <td>Pioderma del obejero aleman</td>
-            
-        </tr>
+        {% endfor %}
+        
     </tbody>
 </table>
-
+</div>
 
 
 </div>
@@ -56,7 +53,12 @@
 
 
 {% block librerias %}
-
+<script>
+    $(document).ready(function() {
+        $('#tabla_principal').DataTable();
+    } );
+    </script>
+    
 {% endblock %}
 
 

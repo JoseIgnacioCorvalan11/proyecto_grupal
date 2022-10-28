@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css' ) }}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     {% block css %}
     {% endblock %}
 </head>
@@ -18,7 +19,8 @@
     {% endblock %}
     <script src="{{ url_for('static', filename='js/bootstrap.js' ) }}"></script>
     <script src="{{ url_for('static', filename='js/jquery-3.6.1.min.js' ) }}"></script>
-    <script src="{{ url_for('static', filename='js/toastr.min.js' ) }}"></script> 
+    <script src="{{ url_for('static', filename='js/toastr.min.js' ) }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.dataTables.js' ) }}"></script> 
     <script>
         toastr.options = {
             "closeButton": true,

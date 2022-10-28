@@ -1,6 +1,6 @@
 import os
 from flask_app.models.usuario import Usuario
-from flask import flash, redirect, request, session
+from flask import flash, redirect, request, session, render_template
 from flask_app import app
 from flask_bcrypt import Bcrypt
 
@@ -71,7 +71,7 @@ def modificar_usuario(id):
     return redirect("/administracion")
 
 @app.route("/eliminar/<id>")
-def eliminar(id):
+def eliminar_usuario(id):
     
     if 'mail' in session:
         Usuario.delete(id)
@@ -80,4 +80,11 @@ def eliminar(id):
     else:
         return redirect("/")
 
+
+@app.route("/usuarios/<id>/modificar")
+def usuario_modificar(id):
+    if 'mail' in session:
+        return render_template("modificar_usuario.html", usuario=Usuario.get_by_id(id))
+    else:
+        return redirect ("/")
    

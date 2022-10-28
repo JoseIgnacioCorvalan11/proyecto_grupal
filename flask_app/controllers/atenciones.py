@@ -4,23 +4,27 @@ from flask_app.models.atencion import Atencion
 from flask import flash, redirect, render_template, request, session
 from flask_app import app
 
-@app.route("/atenciones_veterinario")
-def atencion(data, id, tratamiento, fecha, peso, mascota):
+@app.route("/agregar_atencion", methods=["POST"])
+def agregar_atencion():
+    
     data = {
-        id: id,
-        tratamiento : tratamiento,
-        fecha: request.form['fecha'],
-        peso : peso,
-        mascota : mascota
+        "fecha": request.form['fecha'],
+        "veterinario" : request.form['veterinario'],
+        "mascota" : request.form['mascota'],
+        "tratamiento" : request.form['tratamiento'],
+        "medicamento" : request.form['medicamento']
     }
-    data_atencion = data
-    return render_template("atenciones.html", data_atencion=data_atencion)
+    print(data)
+    Atencion.save(data)
+    flash("exito al agregar la atencion", "success")
+    return redirect("/atenciones")
 
-@app.route("/atenciones_usuario")
-def atencion_usuario(data, id, tratamiento):
-    data = {
-        id : id,
-        tratamiento : tratamiento
-    }
-    data_atencion_cliente = data
-    return render_template("index.html", data_atencion_cliente=data_atencion_cliente)
+@app.route("/eliminar_atencion/<id>")
+def eliminar_atencion(id):
+    if 'mail' in session:
+        print(id)
+        Atencion.delete(id)
+        flash("Atencion eliminada exitosamente","success")
+        return redirect("/atenciones")
+    else:
+        return redirect("/")
