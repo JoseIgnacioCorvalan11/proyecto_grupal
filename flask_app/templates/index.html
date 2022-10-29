@@ -6,6 +6,8 @@
 <div class="container-fluid  mt-5">
 <h3 class="text-white">Pagina Principal</h3>
 
+
+{% if session['tipo']==3 %}
 <div class="bg-white p-3 border rounded">
 <table class="table table-striped table-bordered dt-responsive nowrap bg-white" style="width:100%" id="tabla_principal">
     <thead>
@@ -15,18 +17,18 @@
             <th>Veterinario</th>
             <th>Diagnostico</th>
             <th>Medicamento</th>
-            <th>Reporte</th>
+            
             
         </tr>
     </thead>
     <tbody>
-       {% for atencion in atenciones %}
+       {% for atencion in atencionesd %}
         <tr>
             <td>{{atencion.nombre_mascota}}</td>
             <td>{{atencion.dueño}}</td>
             <td>{{atencion.veterinario}}</td>
             <td>
-                <textarea class="form-control" readonly>{{atencion.tratamiento}}</textarea>
+                <textarea class="form-control" rows="4" cols="30" readonly>{{atencion.tratamiento}}</textarea>
                 
             </td>
             <td>{{atencion.medicamento}}</td>
@@ -38,8 +40,40 @@
     </tbody>
 </table>
 </div>
-
-
+{% else %}
+<div class="bg-white p-3 border rounded">
+    <table class="table table-striped table-bordered dt-responsive nowrap bg-white" style="width:100%" id="tabla_principal">
+        <thead>
+            <tr>
+                <th>Mascota</th>
+                <th>Dueño</th>
+                <th>Veterinario</th>
+                <th>Diagnostico</th>
+                <th>Medicamento</th>
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+           {% for atencion in atenciones %}
+            <tr>
+                <td>{{atencion.nombre_mascota}}</td>
+                <td>{{atencion.dueño}}</td>
+                <td>{{atencion.veterinario}}</td>
+                <td>
+                    <textarea class="form-control" rows="4" cols="30" readonly>{{atencion.tratamiento}}</textarea>
+                    
+                </td>
+                <td>{{atencion.medicamento}}</td>
+                
+                
+            </tr>
+            {% endfor %}
+            
+        </tbody>
+    </table>
+</div>
+{% endif %}
 </div>
 
 

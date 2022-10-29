@@ -103,7 +103,7 @@ class Usuario:
         if len(data['contraseña']) < 8:
             flash("Debes ingresar al menos 8 caracteres en la contraseña.", "error")
             is_valid = False
-        
+            
         if not EMAIL_REGEX.match(data['mail']):
             flash("Formato de correo incorrecto", "error")
             is_valid = False

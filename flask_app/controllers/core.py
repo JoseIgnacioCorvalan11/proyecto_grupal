@@ -6,7 +6,7 @@ from flask_app.models.atencion import Atencion
 from flask import flash, redirect, render_template, request, session, make_response
 from flask_app import app
 from flask_bcrypt import Bcrypt
-import pdfkit
+
 
 bcrypt=Bcrypt(app)
 
@@ -65,24 +65,12 @@ def medicamentos():
 def inicio():
     if 'mail' in session:
         atenciones=Atencion.get_all()
-        return render_template("index.html", atenciones=atenciones)
+        atencionesd=Atencion.get_all_by_user(session['id'])
+        return render_template("index.html", atenciones=atenciones, atencionesd=atencionesd)
     else:
         return redirect("/")
 
-@app.route("/reporte")
-def reporte():
-    if 'mail' in session:
-        atenciones=Atencion.get_all()
-        rendered= render_template("reporte.html", atenciones=atenciones)
-        pdf=pdfkit.from_string(rendered, False)
 
-        response=make_response(pdf)
-        response.headers['Content-Type'] =  'aplication/pdf'
-        response.headers['Content-Disposition'] =  'inline'
-
-        return response
-    else:
-        return redirect("/")
 
 
 @app.route("/administracion")

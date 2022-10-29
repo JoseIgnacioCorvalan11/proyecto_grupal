@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block titulo %}Dashboard{% endblock %}
+{% block titulo %}Atenciones{% endblock %}
 {% block contenido %}
 {% include "__menu.html" %}
 <div class="container-fluid  mt-5">
@@ -18,8 +18,9 @@
             <input  class="form-control" type="date" name="fecha" >
         </div>
         <div class="mb-3">
-            <label for="veterinario" class="form-label">Veterinario:</label>
-            <input type="text" class="form-control" value="{{session['nombre']+' '+session['apellido_p']}}" readonly>
+            <label for="veterinario" class="form-label">Veterinario: {{session['nombre']+' '+session['apellido_p']}}</label>
+
+            <input type="hidden" class="form-control" name="veterinario" value="{{session['id']}}" readonly>
         </div>
         <div class="mb-3">
             <label for="mascota"  class="form-label">Mascota:</label>
@@ -65,15 +66,15 @@
             <td>{{atencion.nombre_mascota}}</td>
             <td>{{atencion.dueño}}</td>
             <td>{{atencion.veterinario}}</td>
-            <td>
-                <textarea class="form-control" readonly>{{atencion.tratamiento}}</textarea>
-                
+            <td>  
+                <textarea class="form-control"  rows="4" cols="30" readonly>{{atencion.tratamiento}}</textarea>
             </td>
             <td>{{atencion.medicamento}}</td>
             
             <td>
                 {% if atencion.id_vet == session['id']%}
-                <a href="#"  class="btn btn-warning"><i class='bx bx-edit bx-sm' alt="modificar"></i></a>
+                <a href="/atencion/{{atencion.id}}/modificar"  class="btn btn-warning"><i class='bx bx-edit bx-sm' alt="modificar"></i></a>
+                
                 <a href="/eliminar_atencion/{{atencion.id}}" class="btn btn-danger"><i class='bx bx-x-circle bx-sm' alt="eliminar"></i></a>
                 {% else %}
                 <p>No es tu paciente</p>

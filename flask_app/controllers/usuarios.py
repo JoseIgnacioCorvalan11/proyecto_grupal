@@ -55,7 +55,6 @@ def modificar_usuario(id):
     if len(request.form['contraseña'])>1:
         hash_pass = bcrypt.generate_password_hash(request.form['contraseña'])
     else:
-        print(info_user['contraseña'])
         hash_pass=info_user['contraseña']
     data = {
         "id": request.form["id"],
